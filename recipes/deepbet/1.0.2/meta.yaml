@@ -33,8 +33,8 @@ requirements:
     - nibabel
     - pandas
     - cudatoolkit  # [deepbet_variant == "cuda"]
-    - pytorch * cuda11*  # [deepbet_variant == "cuda"]
-    - pytorch * cpu_*  # [deepbet_variant == "cpu"]
+    - pytorch >=2.1 cuda11*  # [deepbet_variant == "cuda"]
+    - pytorch >=2.1 cpu_*  # [deepbet_variant == "cpu"]
     - tqdm
     - customtkinter
     - tk * xft_*
@@ -47,8 +47,8 @@ requirements:
     - nibabel
     - pandas
     - cudatoolkit  # [deepbet_variant == "cuda"]
-    - pytorch * cuda11*  # [deepbet_variant == "cuda"]
-    - pytorch * cpu_*  # [deepbet_variant == "cpu"]
+    - pytorch >=2.1 cuda11*  # [deepbet_variant == "cuda"]
+    - pytorch >=2.1 cpu_*  # [deepbet_variant == "cpu"]
     - tqdm
     - customtkinter
     - tk * xft_*
