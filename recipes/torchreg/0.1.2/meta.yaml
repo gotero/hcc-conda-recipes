@@ -27,15 +27,15 @@ requirements:
     - pip
     - poetry-core
     - cudatoolkit  # [torchreg_variant == "cuda"]
-    - pytorch * cuda11*  # [torchreg_variant == "cuda"]
-    - pytorch * cpu_*  # [torchreg_variant == "cpu"]
+    - pytorch >=2.1 cuda11*  # [torchreg_variant == "cuda"]
+    - pytorch >=2.1 cpu_*  # [torchreg_variant == "cpu"]
     - tqdm
   run:
     - python
     - poetry-core
     - cudatoolkit  # [torchreg_variant == "cuda"]
-    - pytorch * cuda11*  # [torchreg_variant == "cuda"]
-    - pytorch * cpu_*  # [torchreg_variant == "cpu"]
+    - pytorch >=2.1 cuda11*  # [torchreg_variant == "cuda"]
+    - pytorch >=2.1 cpu_*  # [torchreg_variant == "cpu"]
     - tqdm
 
 test:
