@@ -13,7 +13,9 @@ package:
 source:
   url: https://github.com/3dem/{{ name|lower }}/archive/{{ version }}.tar.gz
   sha256: {{ sha256 }}
-  patches: cmake.patch
+  patches: 
+    - cmake.patch
+    - jazz.patch
 
 build:
   skip: True  # [py2k or py>=40 or py<39]
@@ -29,8 +31,9 @@ build:
 
 requirements:
   build:
+    - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - cmake <3.27
+    - cmake <4
     - make
     - pkg-config
     - {{ cdt('libx11-devel') }}
@@ -56,7 +59,6 @@ requirements:
     - pbzip2
     - xz
     - zstd
-    - tbb
     - tbb-devel
     - pytorch 2.4.1 {{ relion_variant }}*
     - torchvision >=0.15.2 {{ relion_variant }}*
@@ -103,7 +105,6 @@ requirements:
     - pbzip2
     - xz
     - zstd
-    - tbb
     - tbb-devel
     - pytorch 2.4.1 {{ relion_variant }}*
     - torchvision >=0.15.2 {{ relion_variant }}*
@@ -136,7 +137,7 @@ requirements:
 
 test:
   commands:
-    - relion_image_handler --help
+    - relion --help
 
 about:
   home: "https://github.com/3dem/relion"

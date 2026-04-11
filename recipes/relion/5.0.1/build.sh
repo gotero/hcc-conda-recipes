@@ -7,21 +7,25 @@ ARCH=$(uname -m)
 
 export CXXFLAGS="${CXXFLAGS} -O3 -Wno-deprecated-declarations"
 export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include"
-export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
-export CXXFLAGS="${CXXFLAGS} -march=x86-64-v3"
+export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib -ltbb -ltbbmalloc"
+export CPATH="${CPATH}:${PREFIX}/include"
+export LIBRARY_PATH="${LIBRARY_PATH}:${PREFIX}/lib"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${PREFIX}/lib"
 
 if [[ ${relion_variant} == "cuda" ]]; then
     # cicc needs to be in the same directory as nvcc
     ln -s $CONDA_PREFIX/nvvm/bin/cicc $PREFIX/bin
     ADDITIONAL_FLAGS="-DCUDA=ON -DCUDA_ARCH=50 -DDoublePrec_ACC=OFF -DCUDAToolkit_ROOT=$CONDA_PREFIX/targets/x86_64-linux -DCUDAToolkit_LIBRARY_ROOT=$CONDA_PREFIX/targets/x86_64-linux -DCMAKE_CUDA_COMPILER=$CONDA_PREFIX/targets/x86_64-linux/bin/nvcc -DCUDA_NVCC_EXECUTABLE=$CONDA_PREFIX/targets/x86_64-linux/bin/nvcc"
 else
-    ADDITIONAL_FLAGS="-DALTCPU=ON"   
+    ADDITIONAL_FLAGS="-DALTCPU=ON -DFORCE_OWN_TBB=OFF"
 fi
 
 export MKLROOT="${PREFIX}"
+export TBBROOT="${PREFIX}"
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
 	-DGUI=ON -DMKLFFT=ON -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
-	-DCMAKE_CXX_COMPILER="${CXX}" -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+        -DCMAKE_C_COMPILER=${CC} -DCMAKE_CXX_COMPILER=${CXX} \
+	-DCMAKE_CXX_COMPILER="${CXX}" -DCMAKE_CXX_FLAGS="${CXXFLAGS} -ltbb -ltbbmalloc" \
 	-DMPI_C_COMPILER=$PREFIX/bin/mpicc -DMPI_CXX_COMPILER=$PREFIX/bin/mpicxx \
 	-DPYTHON_EXE_PATH="${PYTHON}" -DTORCH_HOME_PATH="${PREFIX}/share/.cache/torch" \
         -DTIFF_INCLUDE_DIR=$PREFIX/include -DTIFF_LIBRARY=$PREFIX/lib/libtiff.so \

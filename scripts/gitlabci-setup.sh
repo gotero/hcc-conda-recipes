@@ -19,7 +19,7 @@ SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 if [[ `uname` == Linux ]]
 then
     tag=Linux
-    sudo yum install -y -q mesa-libGLU-devel mesa-libGL-devel tcsh
+    sudo yum install -y -q mesa-libGLU-devel mesa-libGL-devel tcsh wget
     mv -f -v $HOME/.condarc $ANACONDA_PREFIX
 #    mkdir -p /ramdisk/conda-bld
 #    ln -s /ramdisk/conda-bld $ANACONDA_PREFIX/conda-bld
@@ -45,7 +45,9 @@ else
 fi
 
 # install bioconda-utils required packages
-conda install -q -y --file https://raw.githubusercontent.com/acaprez/bioconda-utils/${HCC_BIOCONDA_UTILS_TAG}/bioconda_utils/bioconda_utils-requirements.txt
+wget -O /tmp/bioconda_utils-requirements.txt https://raw.githubusercontent.com/acaprez/bioconda-utils/${HCC_BIOCONDA_UTILS_TAG}/bioconda_utils/bioconda_utils-requirements.txt
+conda install -q -y --file /tmp/bioconda_utils-requirements.txt
+rm /tmp/bioconda_utils-requirements.txt
 
 # add HCC channel
 conda config --system --add channels hcc
