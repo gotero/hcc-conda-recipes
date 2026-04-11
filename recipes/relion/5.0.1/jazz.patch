@@ -1,0 +1,43 @@
+--- src/apps/CMakeLists.txt.org	2026-04-03 20:01:17.793110777 +0000
++++ src/apps/CMakeLists.txt	2026-04-03 23:28:36.890750796 +0000
+@@ -330,12 +330,12 @@
+ 	hip_add_library(relion_jaz_gpu_util ${REL_JAZ_HIP_SRC})
+ 
+ 	#list(APPEND EXTRA_LIBS "${HIPFFT_LIBRARIES}")
+-	#if(BUILD_SHARED_LIBS)
+-	#	install (TARGETS relion_jaz_gpu_util LIBRARY DESTINATION lib)
+-	#else()
+-	#	target_link_libraries(relion_jaz_gpu_util relion_lib)
+-	#	target_link_libraries(relion_jaz_gpu_util ${HIPFFT_LIBRARIES})
+-	#endif()
++	if(BUILD_SHARED_LIBS)
++		install (TARGETS relion_jaz_gpu_util LIBRARY DESTINATION lib)
++	else()
++		target_link_libraries(relion_jaz_gpu_util relion_lib)
++		target_link_libraries(relion_jaz_gpu_util ${HIPFFT_LIBRARIES})
++	endif()
+ 
+ 	target_link_libraries(relion_lib relion_jaz_gpu_util ${HIPFFT_LIBRARIES})
+ 	target_link_libraries(relion_lib relion_jaz_gpu_util ${HIPFFT_LIBRARIES} ${HIPRAND_LIBRARIES})
+@@ -487,6 +487,10 @@
+ 		target_link_libraries(${_target} ${TIFF_LIBRARIES})
+ 	endif()
+ 
++	if (ALTCPU)
++                target_link_libraries(${_target} ${TBB_LIBRARIES})
++        endif(ALTCPU)
++
+ 	list(FIND RELION_MPI_TARGETS ${_target}.cpp IS_MPI_TARGET)
+ 	if(NOT ${IS_MPI_TARGET} LESS 0)
+ 		target_link_libraries(${_target} ${MPI_LIBRARIES})
+@@ -534,6 +538,10 @@
+ 		target_link_libraries(${_target} ${TIFF_LIBRARIES})
+ 	endif()
+ 
++	if (ALTCPU)
++                target_link_libraries(${_target} ${TBB_LIBRARIES})
++        endif(ALTCPU)
++
+     if(SYCL)
+         target_link_libraries(${_target} sycl OpenCL relion_lib)
+     endif(SYCL)
