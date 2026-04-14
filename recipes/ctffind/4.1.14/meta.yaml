@@ -1,0 +1,55 @@
+{% set name = "ctffind" %}
+{% set version = "4.1.14" %}
+{% set sha256 = "db17b2ebeb3c3b2b3764e42b820cd50d19ccccf6956c64257bfe5d5ba6b40cb5" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  fn: ctffind.tar.gz
+  url: https://uofnebraska.sharepoint.com/:u:/s/NU-HCC/IQDEYis3xt0aRarkWiYZdwL3AblSZe1OxImCUTzcWxWSjzI?e=B1ZNG2&download=1
+  sha256: {{ sha256 }}
+
+build:
+  number: 0
+  run_exports:
+    - {{ pin_subpackage(name|lower, max_pin="x") }}
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - make
+  host:
+    - wxwidgets
+    - libtiff
+    - fftw
+    - libjpeg-turbo 3.*
+    - zlib
+    - xz
+  run:
+    - wxwidgets
+    - libtiff
+    - fftw
+    - libjpeg-turbo 3.*
+    - zlib
+    - xz
+
+test:
+  commands:
+    - ctffind --help 2>&1 | grep "Usage" > /dev/null
+
+about:
+  home: "https://grigoriefflab.umassmed.edu/ctf_estimation_ctffind_ctftilt"
+  license: Custom OSS
+  license_file: COPYING
+  license_family: OTHER
+  summary: "Fast and accurate defocus estimation from electron micrographs."
+
+extra:
+  identifiers:
+    - doi:10.1016/j.jsb.2015.08.008
+    - doi:10.1016/s1047-8477(03)00069-8
+  skip-lints:
+    - should_not_use_fn
